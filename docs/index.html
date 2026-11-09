@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Screening Verdict — Tenant Applicant Judge</title>
+<meta name="description" content="Score a rental applicant honestly, price the vacancy bleed against the eviction risk, and get a wax-seal verdict: approve, condition it, hold out, or pass.">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon-32.png"><link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="theme-color" content="#0A1F15">
+<style>
+:root{--bg:#0A1F15;--surface:#10281B;--text:#F2F0E4;--accent:#D4AF37;--accent2:#1E5C3A;--muted:#b8b49a;--line:#2a4a33;--bad:#e08a7a;--good:#9fc48a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Georgia,'Times New Roman',serif;line-height:1.5}
+.wrap{max-width:1020px;margin:0 auto;padding:22px 16px 60px}
+.eyebrow{text-transform:uppercase;letter-spacing:.32em;font-size:.68rem;color:var(--accent);text-align:center}
+h1{font-size:2.5rem;text-align:center;margin:.2em 0 .1em;font-weight:700;letter-spacing:.02em}
+.sub{text-align:center;color:var(--muted);font-style:italic;max-width:680px;margin:0 auto 8px}
+.rule{border-top:2px solid var(--accent);border-bottom:1px solid var(--accent2);height:5px;margin:18px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--accent);padding:20px;margin:16px 0;box-shadow:inset 0 1px 0 rgba(212,175,55,.35)}
+.card h2{text-transform:uppercase;letter-spacing:.2em;font-size:.85rem;color:var(--accent);margin:0 0 14px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:4px}
+input,select{width:100%;background:#0A1F15;border:1px solid var(--line);color:var(--text);padding:10px;font-family:Georgia,serif;font-size:1rem}
+input:focus,select:focus{border-color:var(--accent);outline:none}
+button{background:var(--accent2);color:#F2F0E4;border:1px solid var(--accent);padding:12px 20px;font-family:Georgia,serif;font-weight:700;text-transform:uppercase;letter-spacing:.14em;cursor:pointer;font-size:.85rem}
+button.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+button:hover{filter:brightness(1.15)}
+.hero-num{font-size:3.1rem;color:var(--accent);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.seal{display:flex;align-items:center;justify-content:center;width:168px;height:168px;border-radius:50%;border:4px double var(--accent);color:var(--accent);background:radial-gradient(circle at 35% 30%,#1E5C3A,#0A1F15 72%);text-align:center;padding:18px;font-size:1.05rem;line-height:1.25;letter-spacing:.14em;text-transform:uppercase;transform:rotate(-3deg);margin:10px auto;box-shadow:0 8px 28px rgba(0,0,0,.5)}
+table{width:100%;border-collapse:collapse;font-size:.92rem}th,td{padding:8px 6px;border-bottom:1px solid #223d2b;text-align:right;font-variant-numeric:tabular-nums}th:first-child,td:first-child{text-align:left}th{color:var(--accent);text-transform:uppercase;letter-spacing:.1em;font-size:.72rem}
+.win{color:var(--good);font-weight:700}.lose{color:var(--bad);font-weight:700}
+.bar{height:14px;background:#0A1F15;border:1px solid var(--line);margin:4px 0 12px}.bar i{display:block;height:100%;background:var(--accent)}
+.small{font-size:.85rem;color:var(--muted)}.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.presets button{flex:1;min-width:140px}
+.kv{display:flex;justify-content:space-between;border-bottom:1px solid #223d2b;padding:7px 0;gap:12px}.kv b{color:var(--accent);text-align:right}
+.center{text-align:center}ul{margin:6px 0;padding-left:18px}li{margin:4px 0}
+footer{text-align:center;color:var(--muted);font-size:.8rem;margin-top:30px}
+</style></head><body><div class="wrap">
+<div class="eyebrow">The Bull Brew · Daily Tool № 42</div>
+<h1>THE SCREENING VERDICT</h1>
+<p class="sub">A vacant house bleeds every day. A bad tenant bleeds for a year. This scores the applicant in front of you, prices both bleeds honestly, and tells you which one is cheaper to risk.</p>
+<div class="rule"></div>
+
+<div class="card"><h2>Presets</h2><div class="row presets">
+<button class="ghost" onclick="preset(0)">Strong Applicant</button>
+<button class="ghost" onclick="preset(1)">Borderline — 584</button>
+<button class="ghost" onclick="preset(2)">Risky Applicant</button></div>
+<p class="small">The Borderline preset is the classic trap: not terrible, not good, and the house has already sat empty for weeks. That is exactly when landlords talk themselves into trouble — or out of money.</p></div>
+
+<div class="card"><h2>The Property &amp; The Vacancy</h2><div class="grid">
+<div><label>Monthly rent ($)</label><input id="rent" type="number" value="1850"></div>
+<div><label>Monthly carrying cost while vacant ($)</label><input id="carrying" type="number" value="1450"></div>
+<div><label>Days already vacant</label><input id="daysVacant" type="number" value="45"></div>
+<div><label>Expected wait for the next applicant (days)</label><input id="waitDays" type="number" value="32"></div>
+<div><label>Full eviction cost if it goes wrong ($)</label><input id="evictCost" type="number" value="4500"></div>
+<div><label>Turnover / make-ready cost ($)</label><input id="turnoverCost" type="number" value="1200"></div>
+</div></div>
+
+<div class="card"><h2>The Applicant</h2><div class="grid">
+<div><label>Credit score</label><input id="credit" type="number" value="584"></div>
+<div><label>Gross monthly income ($)</label><input id="income" type="number" value="4800"></div>
+<div><label>Months in current job</label><input id="jobMonths" type="number" value="14"></div>
+<div><label>Evictions</label><select id="evictions"><option value="0">None ever</option><option value="1">One, 4–7 years ago</option><option value="2">One, within 3 years</option><option value="3">Two or more</option></select></div>
+<div><label>Late rent payments, last 12 months</label><input id="latePays" type="number" value="2"></div>
+<div><label>Outstanding collections ($)</label><input id="collections" type="number" value="850"></div>
+<div><label>Rental history</label><select id="history"><option value="strong">2+ years, verifiable landlord</option><option value="thin">Thin — under a year / hard to verify</option><option value="first">First rental / living with family</option></select></div>
+</div>
+<p class="small">Screen on money behaviour only: score, income coverage, payment history, stability, collections. Verify everything — a score you have not seen on a real report is a rumour. Follow your local and federal fair-housing law; this tool judges finances, never people.</p>
+<div class="row"><button onclick="calc()">Judge This Applicant</button><button class="ghost" onclick="saveCase()">Save Case</button><button class="ghost" onclick="copySummary()">Copy Summary</button></div>
+</div>
+
+<div class="card" id="out" style="display:none">
+<h2 class="center">The Verdict</h2>
+<div class="seal" id="seal">—</div>
+<div class="center"><div class="hero-num" id="scoreNum">—</div><p class="small">Applicant score out of 100</p></div>
+<p id="verdictText"></p>
+<div class="grid">
+<div><h2>Take Them Now</h2><div id="acceptOut"></div></div>
+<div><h2>Pass &amp; Wait</h2><div id="waitOut"></div></div>
+</div>
+<h2 style="margin-top:18px">Score Anatomy</h2><div id="bars"></div>
+<h2 style="margin-top:18px">Conditions That Would Fix The Weak Spots</h2><div id="conds"></div>
+</div>
+
+<div class="card" id="sensCard" style="display:none"><h2>Sensitivity — If The Wait Were…</h2>
+<table><thead><tr><th>Wait</th><th>Vacancy drag</th><th>Wait total (drag + next risk)</th><th>Take-now risk</th><th>Cheaper path</th></tr></thead><tbody id="sensBody"></tbody></table>
+<p class="small">The next applicant is modelled as a solid qualified tenant (score 75). If your market will not deliver one of those, waiting is more expensive than this table admits.</p></div>
+
+<div class="card"><h2>Saved Cases</h2><div id="savedList" class="small">None saved yet.</div></div>
+
+<div class="card"><h2>The Method &amp; The Honest Caveats</h2>
+<p class="small"><b>Score (100 pts):</b> credit 35, income coverage 25, rental history 20 (evictions and late payments bite here), job stability 10, collections 10. Each band is interpolated, not cliff-edged — a 584 is not magically different from a 586. <b>Default risk</b> is estimated from the score (about 3% at 90+, 9% at 70, 24% at 50, 48% at 30) and priced against one bad outcome: eviction cost + 2.5 months of unpaid rent + turnover. <b>Waiting</b> is priced at the rent you forgo each day, plus the next (better) applicant's smaller risk. Money already burned while vacant is shown as sunk — it should sting, but it should not decide. Probabilities are planning estimates, not predictions about a person. Courts, timelines and deposit rules vary by state; price your own eviction cost honestly.</p></div>
+<footer>The Screening Verdict · A Bull Brew daily tool · All math runs in your browser. Nothing is uploaded.</footer>
+</div>
+<script>
+var $=function(id){return document.getElementById(id)};
+var fmt=function(n){return (n<0?'-$':'$')+Math.abs(Math.round(n)).toLocaleString()};
+function interp(x,pts){if(x<=pts[0][0])return pts[0][1];for(var i=1;i<pts.length;i++){if(x<=pts[i][0]){var x0=pts[i-1][0],y0=pts[i-1][1],x1=pts[i][0],y1=pts[i][1];return y0+(x-x0)*(y1-y0)/(x1-x0)}}return pts[pts.length-1][1]}
+var PRESETS=[
+{rent:1850,carrying:1450,daysVacant:12,waitDays:21,evictCost:4500,turnoverCost:1200,credit:742,income:6950,jobMonths:36,evictions:'0',latePays:0,collections:0,history:'strong'},
+{rent:1850,carrying:1450,daysVacant:45,waitDays:32,evictCost:4500,turnoverCost:1200,credit:584,income:4800,jobMonths:14,evictions:'0',latePays:2,collections:850,history:'strong'},
+{rent:1850,carrying:1450,daysVacant:60,waitDays:40,evictCost:4500,turnoverCost:1200,credit:535,income:3600,jobMonths:4,evictions:'2',latePays:5,collections:2800,history:'thin'}];
+function preset(i){var p=PRESETS[i];for(var k in p){if($(k))$(k).value=p[k]}calc()}
+function inputs(){var o={};['rent','carrying','daysVacant','waitDays','evictCost','turnoverCost','credit','income','jobMonths','latePays','collections'].forEach(function(k){o[k]=parseFloat($(k).value)||0});o.evictions=$('evictions').value;o.history=$('history').value;return o}
+function scoreApplicant(inp){
+ var creditPts=interp(inp.credit,[[300,0],[540,4],[580,7],[600,10],[620,14],[640,18],[660,22],[680,26],[700,29],[720,31],[740,33],[760,35],[850,35]]);
+ var mult=inp.rent>0?inp.income/inp.rent:0;
+ var incomePts=interp(mult,[[1,0],[1.5,2],[2,4],[2.25,8],[2.5,12],[2.75,16],[3,20],[3.5,23],[4,25],[5,25]]);
+ var evDed={0:0,1:6,2:16,3:20}[inp.evictions]||0;
+ var lateDed=Math.min(10,inp.latePays*2.5);
+ var histDed=inp.history==='thin'?5:(inp.history==='first'?3:0);
+ var rentalPts=Math.max(0,20-evDed-lateDed-histDed);
+ var stabPts=interp(inp.jobMonths,[[0,1],[3,3],[6,5],[12,8],[24,10],[60,10]]);
+ var collPts=interp(inp.collections,[[0,10],[500,7],[1500,4],[3000,2],[6000,0]]);
+ var total=Math.round(creditPts+incomePts+rentalPts+stabPts+collPts);
+ return {creditPts:creditPts,incomePts:incomePts,rentalPts:rentalPts,stabPts:stabPts,collPts:collPts,total:total,mult:mult};
+}
+function probFor(score){return interp(score,[[0,58],[30,48],[40,36],[50,24],[60,15],[70,9],[80,5],[90,3],[100,2]])}
+var LAST=null;
+function calc(){
+ var inp=inputs();var s=scoreApplicant(inp);
+ var prob=probFor(s.total);
+ var lossEvent=inp.evictCost+2.5*inp.rent+inp.turnoverCost;
+ var acceptLoss=prob/100*lossEvent;
+ var nextProb=probFor(75);var nextLoss=nextProb/100*lossEvent;
+ var dailyCash=inp.carrying/30;var dailyDrag=inp.rent/30;
+ var sunk=inp.daysVacant*dailyCash;
+ var waitDrag=inp.waitDays*dailyDrag;var waitTotal=waitDrag+nextLoss;
+ var breakeven=(acceptLoss-nextLoss)/Math.max(1,dailyDrag);
+ var seal,text;
+ if(s.total>=75){seal='APPROVE';text='This applicant clears the bar on the numbers. Score '+s.total+', estimated default risk '+prob.toFixed(1)+'%, expected risk cost '+fmt(acceptLoss)+' against a vacancy that is already costing you '+fmt(dailyCash)+' a day in cash. Verify the documents, sign the lease, stop the bleed.'}
+ else if(s.total>=60){seal='CONDITIONAL';text='Workable, not clean. Score '+s.total+' with '+prob.toFixed(1)+'% estimated default risk. Do not approve the file as-is — approve it with the conditions below, each one aimed at a specific weak spot. Expected risk '+fmt(acceptLoss)+' vs '+fmt(waitTotal)+' to wait for a stronger applicant.'}
+ else if(s.total>=45){if(acceptLoss<=waitTotal){seal='TAKE THE RISK';text='The file is weak — score '+s.total+', '+prob.toFixed(1)+'% default risk — but the maths is colder than the instinct: taking them now carries '+fmt(acceptLoss)+' of expected risk, while waiting '+inp.waitDays+' days for a better applicant costs '+fmt(waitTotal)+'. If you take them, take them on conditions, on autopay, and with your eyes open.'}else{seal='HOLD OUT';text='Weak file, and waiting is still cheaper. Score '+s.total+', expected risk '+fmt(acceptLoss)+', versus '+fmt(waitTotal)+' to hold out '+inp.waitDays+' days for a qualified applicant. Every extra week hurts — but an eviction hurts for a year. Hold, and market the house harder instead of lowering the bar.'}}
+ else{seal='PASS';text='Pass. Score '+s.total+' means an estimated '+prob.toFixed(1)+'% chance this ends in missed rent and court, priced at '+fmt(acceptLoss)+' expected — before the stress, which no spreadsheet refunds. A vacant month is a bill. A bad tenant is a season. Keep marketing.'}
+ $('out').style.display='block';$('seal').textContent=seal;$('scoreNum').textContent=s.total+' / 100';$('verdictText').textContent=text;
+ $('acceptOut').innerHTML='<div class="kv"><span>Estimated default risk</span><b>'+prob.toFixed(1)+'%</b></div><div class="kv"><span>Cost if it goes wrong</span><b>'+fmt(lossEvent)+'</b></div><div class="kv"><span>Expected risk cost</span><b>'+fmt(acceptLoss)+'</b></div><div class="kv"><span>Income coverage</span><b>'+s.mult.toFixed(2)+'× rent</b></div>';
+ $('waitOut').innerHTML='<div class="kv"><span>Cash bleed while vacant</span><b>'+fmt(dailyCash)+' / day</b></div><div class="kv"><span>Already burned (sunk)</span><b>'+fmt(sunk)+'</b></div><div class="kv"><span>Drag of waiting '+inp.waitDays+' days</span><b>'+fmt(waitDrag)+'</b></div><div class="kv"><span>Wait total incl. next risk</span><b>'+fmt(waitTotal)+'</b></div><div class="kv"><span>Break-even wait</span><b>'+(breakeven<=0?'Waiting never pays':Math.round(breakeven)+' days')+'</b></div>';
+ var rows=[['Credit',s.creditPts,35],['Income coverage',s.incomePts,25],['Rental history',s.rentalPts,20],['Job stability',s.stabPts,10],['Collections',s.collPts,10]];
+ $('bars').innerHTML=rows.map(function(r){return '<label>'+r[0]+' — '+r[1].toFixed(1)+' / '+r[2]+'</label><div class="bar"><i style="width:'+(r[1]/r[2]*100)+'%"></i></div>'}).join('');
+ var conds=[];
+ if(inp.credit<680)conds.push('Autopay required from day one, and the largest deposit your state law allows — the score says willpower is not the plan, systems are.');
+ if(s.mult<3)conds.push('Income coverage is under 3×: ask for a qualified guarantor, or proof of reserves covering at least 3 months of rent.');
+ if(inp.jobMonths<12)conds.push('Short job tenure: verify employment directly with the employer and check the most recent pay stubs, not just the offer letter.');
+ if(inp.latePays>0)conds.push('Late history on record: start on a 6-month initial term with renewal earned, and put the late-fee clause in plain language at signing.');
+ if(inp.evictions!=='0')conds.push('An eviction is on the file: call the two most recent landlords yourself. Third-party summaries hide exactly what you need.');
+ if(inp.collections>1000)conds.push('Collections over $1,000: require proof they are paid or on a documented payment plan before keys change hands.');
+ if(inp.history!=='strong')conds.push('Thin rental history: strengthen verification — landlord references, bank statements showing prior rent paid on time.');
+ if(!conds.length)conds.push('No conditions needed on the numbers. Standard verification, standard lease, move them in.');
+ $('conds').innerHTML='<ul>'+conds.map(function(c){return '<li>'+c+'</li>'}).join('')+'</ul><p class="small">Apply conditions uniformly to every applicant and check your local law — deposit caps and screening rules differ by state, and consistency is both fair and defensible.</p>';
+ $('sensCard').style.display='block';var body='';
+ [0,14,30,45,60,90].forEach(function(d){var drag=d*dailyDrag;var tot=drag+nextLoss;var cheaper=acceptLoss<=tot?'Take now':'Wait';body+='<tr><td>'+d+' days</td><td>'+fmt(drag)+'</td><td>'+fmt(tot)+'</td><td>'+fmt(acceptLoss)+'</td><td class="'+(acceptLoss<=tot?'win':'lose')+'">'+cheaper+'</td></tr>'});
+ $('sensBody').innerHTML=body;
+ LAST={inp:inp,s:s,seal:seal,prob:prob,acceptLoss:acceptLoss,waitTotal:waitTotal};
+ renderSaved();
+}
+function saveCase(){if(!LAST)calc();var list=JSON.parse(localStorage.getItem('sv_cases')||'[]');list.push({t:new Date().toLocaleDateString(),seal:LAST.seal,score:LAST.s.total,credit:LAST.inp.credit,rent:LAST.inp.rent});localStorage.setItem('sv_cases',JSON.stringify(list));renderSaved()}
+function renderSaved(){var list=JSON.parse(localStorage.getItem('sv_cases')||'[]');if(!list.length){$('savedList').textContent='None saved yet.';return}$('savedList').innerHTML=list.map(function(c){return c.t+' — <b style="color:var(--accent)">'+c.seal+'</b> · score '+c.score+' (credit '+c.credit+', rent '+fmt(c.rent)+')'}).join('<br>')}
+function copySummary(){if(!LAST)calc();var s='THE SCREENING VERDICT — '+LAST.seal+', score '+LAST.s.total+'/100, credit '+LAST.inp.credit+', income '+LAST.s.mult.toFixed(2)+'x rent. Default risk '+LAST.prob.toFixed(1)+'%, expected risk cost '+fmt(LAST.acceptLoss)+' vs waiting cost '+fmt(LAST.waitTotal)+'.';if(navigator.clipboard)navigator.clipboard.writeText(s);alert('Summary copied.')}
+calc();
+</script></body></html>
